@@ -1,22 +1,11 @@
-from pathlib import Path
+from directory_scanner import DirectoryScanner
+from file_hasher import FileHasher
 
-class DirectoryScanner:
+scanner = DirectoryScanner()
+hasher = FileHasher()
 
-    def discover_files(self):
-        directory = Path.cwd()
+files = scanner.discover_files()
 
-        files = []
-
-        for item in directory.rglob("*"):
-            if item.is_file():
-                file_info = {
-                    "Path":str(item),
-                    "Name": item.name,
-                    "Size": item.stat().st_size,
-                    "Modified_Time": item.stat().st_mtime,
-                }
-
-                files.append(file_info)
-
-        return files
-
+for file in files:
+    file_hash = hasher.hash_file(file)
+    print(file, file_hash)
